@@ -2776,6 +2776,14 @@ a {
   line-height: 1.45;
 }
 
+
+/* Keep each footer icon independent from the header social styles */
+.footer-social-github:hover { color: #181717; }
+.footer-social-linkedin:hover { color: #0a66c2; }
+.footer-social-x:hover { color: #000000; }
+.footer-social-instagram:hover { color: #e1306c; }
+.footer-social-whatsapp:hover { color: #25d366; }
+
 /* Mobile */
 
 @media (max-width: 650px) {
@@ -2878,7 +2886,7 @@ a {
   gap: 30px;
 }
 
-.social-link {
+.footer-social-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2896,12 +2904,12 @@ a {
     color 0.25s ease;
 }
 
-.social-link:hover {
+.footer-social-link:hover {
   color: #007a3d;
   transform: translateY(-4px);
 }
 
-.social-link.social-linkedin {
+.footer-social-link.footer-social-linkedin {
   font-family: Arial, sans-serif;
   font-size: 1.7rem;
   font-weight: 400;
@@ -2974,7 +2982,7 @@ a {
     gap: 18px;
   }
 
-  .social-link {
+  .footer-social-link {
     width: 34px;
     height: 34px;
     font-size: 1.5rem;
@@ -3200,70 +3208,295 @@ a {
 ======================================== */
 
 .navigation-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
+position: fixed;
+inset: 0;
+z-index: 9999;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+display: flex;
+align-items: center;
+justify-content: center;
 
-  background: #242528;
+background: #242528;
 
-  animation: navigationFadeIn 0.35s ease forwards;
+pointer-events: all;
+will-change: clip-path;
+
+clip-path: inset(0 0 100% 0);
+}
+
+.navigation-overlay.is-covering {
+animation: navigationCover 0.55s
+cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+.navigation-overlay.is-revealing {
+clip-path: inset(0 0 0 0);
+
+animation: navigationReveal 0.7s
+cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+.navigation-overlay-content {
+position: relative;
+
+display: flex;
+flex-direction: column;
+align-items: center;
+
+padding: 20px;
+
+text-align: center;
+
+opacity: 0;
+transform: translateY(30px);
+}
+
+.is-covering .navigation-overlay-content {
+animation: navigationContentIn 0.4s
+cubic-bezier(0.16, 1, 0.3, 1)
+0.22s forwards;
+}
+
+.is-revealing .navigation-overlay-content {
+animation: navigationContentOut 0.25s ease forwards;
+}
+
+.navigation-eyebrow {
+margin-bottom: 12px;
+
+color: #8d8d94;
+
+font-size: 0.7rem;
+font-weight: 700;
+letter-spacing: 0.25em;
 }
 
 .navigation-overlay h1 {
-  margin: 0;
+margin: 0;
 
-  color: #b8b8be;
+color: #ffffff;
 
-  font-size: clamp(3.5rem, 6vw, 6rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-
-  animation: navigationTextIn 0.45s ease forwards;
+font-size: clamp(2.8rem, 8vw, 7rem);
+font-weight: 800;
+line-height: 1;
+letter-spacing: -0.06em;
 }
 
-@keyframes navigationFadeIn {
-  from {
-    opacity: 0;
+@keyframes navigationCover {
+from {
+clip-path: inset(0 0 100% 0);
+}
+
+to {
+clip-path: inset(0 0 0 0);
+}
+}
+
+@keyframes navigationReveal {
+from {
+clip-path: inset(0 0 0 0);
+}
+
+to {
+clip-path: inset(100% 0 0 0);
+}
+}
+
+@keyframes navigationContentIn {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes navigationContentOut {
+from {
+opacity: 1;
+transform: translateY(0);
+}
+
+to {
+opacity: 0;
+transform: translateY(-15px);
+}
+}
+
+@media (max-width: 650px) {
+.navigation-overlay h1 {
+font-size: clamp(2.4rem, 12vw, 4rem);
+}
+
+.navigation-eyebrow {
+font-size: 0.6rem;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+.navigation-overlay,
+.navigation-overlay.is-covering,
+.navigation-overlay.is-revealing,
+.navigation-overlay-content,
+.is-covering .navigation-overlay-content,
+.is-revealing .navigation-overlay-content {
+animation-duration: 0.01ms !important;
+}
+}
+/* =========================
+   FINAL RESPONSIVE + ICON FIXES
+========================= */
+
+/* Prevent SVG/icon rules from leaking between Header and Footer */
+.site-header .social-link {
+  color: #171717;
+  font-size: inherit;
+}
+
+.site-header .social-link > svg:not(.social-hover-line),
+.site-header .spotify-trigger > svg:not(.social-hover-line) {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.site-header .social-link.social-x:hover { color: #000000; }
+.site-header .social-link.social-github:hover { color: #181717; }
+.site-header .social-link.social-linkedin:hover { color: #0a66c2; }
+.site-header .social-link.social-whatsapp:hover { color: #25d366; }
+.site-header .social-link.social-instagram:hover { color: #e1306c; }
+
+.footer-social-link > svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+/* Safer responsive sizing for all sections */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    flex-wrap: wrap;
+    gap: 14px;
   }
 
+  .header-right {
+    min-width: 0;
+  }
+
+  .social-links {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .live-clock {
+    display: none;
+  }
+
+  .hero,
+  .about-section,
+  .terminal-section,
+  .projects-section,
+  .principles-section {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-header {
+    align-items: flex-start;
+  }
+
+  .hello-text {
+    white-space: normal;
+  }
+
+  .header-right {
+    gap: 8px;
+  }
+
+  .site-header .social-links {
+    gap: 8px;
+  }
+
+  .hero-name,
+  .hero-surname {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .project-card,
+  .principle-card,
+  .terminal-window {
+    min-width: 0;
+  }
+
+  .footer-socials {
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0 16px;
+  }
+}
+
+/* =========================
+   PAGE TRANSITION
+   Works with browsers that support the View Transitions API.
+========================= */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-exit 0.28s ease both;
+}
+
+::view-transition-new(root) {
+  animation: page-enter 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-exit {
   to {
-    opacity: 1;
+    opacity: 0;
+    transform: translateY(-10px);
+    filter: blur(2px);
   }
 }
 
-@keyframes navigationTextIn {
+@keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(18px);
+    filter: blur(3px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
-
-@media (max-width: 1050px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 650px) {
-  .projects-section {
-    padding: 80px 18px;
-  }
-
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .projects-heading h2 {
-    font-size: 4rem;
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }

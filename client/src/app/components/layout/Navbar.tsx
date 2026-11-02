@@ -4,38 +4,47 @@ import { useState } from "react";
 
 export default function Navbar() {
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
   const [sectionName, setSectionName] = useState("");
 
   const handleNavigation = (id: string, label: string) => {
-    // منع الضغط المتكرر أثناء الانتقال
     if (isNavigating) return;
 
-    // إظهار شاشة اسم القسم
+    const section = document.getElementById(id);
+
+    // إذا لم يكن القسم موجودًا، لا نبدأ الـ animation
+    if (!section) return;
+
     setSectionName(label.toUpperCase());
     setIsNavigating(true);
 
-    // نترك الشاشة ظاهرة قليلًا
+    // نبدأ حركة تغطية الشاشة
+    requestAnimationFrame(() => {
+      setIsLeaving(true);
+    });
+
+    // بعد اكتمال تغطية الشاشة ننتقل للقسم
     setTimeout(() => {
-      const section = document.getElementById(id);
+      section.scrollIntoView({
+        behavior: "instant",
+        block: "start",
+      });
 
-      if (section) {
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+      // نبدأ كشف الصفحة الجديدة
+      setTimeout(() => {
+        setIsLeaving(false);
+      }, 150);
 
-      // إخفاء الشاشة بعد انتهاء الانتقال
+      // إزالة الـ overlay بالكامل بعد انتهاء الحركة
       setTimeout(() => {
         setIsNavigating(false);
-      }, 800);
-    }, 600);
+      }, 850);
+    }, 550);
   };
 
   return (
     <>
       <nav className="floating-navbar">
-        {/* Home */}
         <button
           className="navbar-home"
           onClick={() => handleNavigation("home", "Home")}
@@ -66,7 +75,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Contact */}
         <button
           className="navbar-talk"
           onClick={() => handleNavigation("contact", "Contact")}
@@ -76,10 +84,17 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Navigation transition */}
       {isNavigating && (
-        <div className="navigation-overlay">
-          <h1>{sectionName}</h1>
+        <div
+          className={`navigation-overlay ${
+            isLeaving ? "is-covering" : "is-revealing"
+          }`}
+          aria-hidden="true"
+        >
+          <div className="navigation-overlay-content">
+            <span className="navigation-eyebrow">NAVIGATING TO</span>
+            <h1>{sectionName}</h1>
+          </div>
         </div>
       )}
     </>
