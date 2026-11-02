@@ -4358,3 +4358,320 @@ a {
     width: 2px;
   }
 }
+
+
+/* =========================================================
+   LET'S TALK MODAL
+   Matches the reference design and supports mobile screens.
+========================================================= */
+
+.talk-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  animation: talkOverlayIn 0.25s ease both;
+}
+
+@keyframes talkOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.talk-modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+
+  padding: 20px 59px 34px;
+
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 13px;
+
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.2);
+
+  animation: talkModalIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes talkModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Small handle at the top */
+
+.talk-modal-handle {
+  width: 125px;
+  height: 10px;
+
+  margin: 0 auto 17px;
+
+  background: #f1f1f3;
+  border-radius: 20px;
+}
+
+/* Close button */
+
+.talk-modal-close {
+  position: absolute;
+  top: 43px;
+  right: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  color: #777777;
+  background: transparent;
+  border: none;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 27px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.talk-modal-close:hover {
+  color: #111111;
+  transform: rotate(90deg);
+}
+
+/* Content */
+
+.talk-modal-content h2 {
+  margin: 0 0 5px;
+
+  color: #171717;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.talk-modal-description {
+  margin: 0;
+
+  color: #85858e;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.48;
+}
+
+/* Action buttons */
+
+.talk-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  margin-top: 40px;
+}
+
+.talk-email-button,
+.talk-copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  min-height: 51px;
+
+  padding: 12px 18px;
+
+  border-radius: 8px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Send email */
+
+.talk-email-button {
+  color: #ffffff;
+  background: #18181a;
+  border: 1px solid #18181a;
+}
+
+.talk-email-button:hover {
+  color: #ffffff;
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+/* Copy email */
+
+.talk-copy-button {
+  color: #171717;
+  background: #ffffff;
+  border: 1px solid #dedee3;
+}
+
+.talk-copy-button:hover {
+  background: #f7f7f8;
+  border-color: #bcbcc3;
+}
+
+.talk-copy-button.is-copied {
+  color: #168b48;
+  background: #f0fff5;
+  border-color: #b9e9ca;
+}
+
+/* Footer note */
+
+.talk-modal-footer {
+  margin: 38px 0 0;
+
+  color: #85858e;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Keyboard focus */
+
+.talk-modal-close:focus-visible,
+.talk-email-button:focus-visible,
+.talk-copy-button:focus-visible {
+  outline: 3px solid rgba(0, 122, 61, 0.35);
+  outline-offset: 3px;
+}
+
+/* Tablet and mobile */
+
+@media (max-width: 600px) {
+  .talk-modal-overlay {
+    align-items: center;
+    padding: 16px;
+  }
+
+  .talk-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 32px);
+
+    padding: 18px 22px 26px;
+    border-radius: 13px;
+  }
+
+  .talk-modal-handle {
+    width: 100px;
+    height: 8px;
+    margin-bottom: 22px;
+  }
+
+  .talk-modal-close {
+    top: 39px;
+    right: 14px;
+  }
+
+  .talk-modal-content h2 {
+    font-size: 21px;
+  }
+
+  .talk-modal-description {
+    padding-right: 2px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .talk-modal-actions {
+    margin-top: 30px;
+    gap: 9px;
+  }
+
+  .talk-email-button,
+  .talk-copy-button {
+    min-height: 49px;
+    font-size: 14px;
+  }
+
+  .talk-modal-footer {
+    margin-top: 28px;
+    font-size: 13px;
+  }
+}
+
+/* Very small phones */
+
+@media (max-width: 380px) {
+  .talk-modal {
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+
+  .talk-modal-description {
+    font-size: 14px;
+  }
+
+  .talk-modal-footer {
+    font-size: 12px;
+  }
+}
+
+/* Respect reduced-motion preference */
+
+@media (prefers-reduced-motion: reduce) {
+  .talk-modal-overlay,
+  .talk-modal {
+    animation: none;
+  }
+
+  .talk-modal-close,
+  .talk-email-button,
+  .talk-copy-button {
+    transition: none;
+  }
+}
