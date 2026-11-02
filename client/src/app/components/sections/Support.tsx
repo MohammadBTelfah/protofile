@@ -1,6 +1,10 @@
+
 "use client";
 
 import type { CSSProperties } from "react";
+import { Coffee, ArrowUpRight } from "lucide-react";
+
+const coffeeUrl = "https://ko-fi.com/mohammedtelfah";
 
 const supporters = [
   {
@@ -43,18 +47,20 @@ export default function Support() {
           <h2>Enjoying my content?</h2>
 
           <p>
-            Consider buying me a coffee to support my work! Your support helps
+            Consider supporting my work with a coffee! Your support helps
             me continue building, learning, and creating better projects.
           </p>
 
           <a
-            href="#"
+            href={coffeeUrl}
             className="coffee-button"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Support me on Ko-fi"
           >
-            <span className="coffee-icon">☕</span>
-            <span>Buy me a coffee</span>
+            <Coffee size={19} />
+            <span>Support Me on Ko-fi</span>
+            <ArrowUpRight size={16} />
           </a>
         </div>
 
