@@ -74,6 +74,7 @@ export default function SpotifyPlayer() {
   const playerElement = useRef<HTMLDivElement>(null);
   const controller = useRef<SpotifyController | null>(null);
 
+  // Initialize Spotify Player
   useEffect(() => {
     let cancelled = false;
 
@@ -125,7 +126,8 @@ export default function SpotifyPlayer() {
 
       if (!existingScript) {
         const script = document.createElement("script");
-        script.src = "https://open.spotify.com/embed/iframe-api/v1";
+        script.src =
+          "https://open.spotify.com/embed/iframe-api/v1";
         script.async = true;
         document.body.appendChild(script);
       }
@@ -138,6 +140,7 @@ export default function SpotifyPlayer() {
     };
   }, []);
 
+  // Change Track
   const playTrack = (index: number) => {
     setSelectedTrack(index);
 
@@ -151,22 +154,30 @@ export default function SpotifyPlayer() {
 
   return (
     <div className="spotify-wrapper">
+      {/* Spotify Trigger */}
       <button
+        type="button"
         className={`spotify-trigger ${
           isPlaying ? "is-playing" : ""
         }`}
         onClick={() => setIsOpen((value) => !value)}
         aria-label="Open Spotify player"
         title="Spotify"
+        aria-expanded={isOpen}
       >
-        {isPlaying ? (
-          <span className="music-equalizer">
+        {/* Spotify Logo - Always Visible */}
+        <FaSpotify
+          size={25}
+          className="spotify-icon"
+        />
+
+        {/* Equalizer - Only When Playing */}
+        {isPlaying && (
+          <span className="music-equalizer" aria-hidden="true">
             <span />
             <span />
             <span />
           </span>
-        ) : (
-          <FaSpotify size={25} />
         )}
 
         <svg
@@ -178,6 +189,7 @@ export default function SpotifyPlayer() {
         </svg>
       </button>
 
+      {/* Spotify Popup */}
       <div
         className={`spotify-popup ${
           isOpen ? "is-open" : "is-closed"
@@ -185,7 +197,9 @@ export default function SpotifyPlayer() {
       >
         <div className="spotify-popup-header">
           <div>
-            <span className="spotify-eyebrow">NOW PLAYING</span>
+            <span className="spotify-eyebrow">
+              NOW PLAYING
+            </span>
             <h3>Change Track</h3>
           </div>
 
@@ -199,8 +213,10 @@ export default function SpotifyPlayer() {
           </button>
         </div>
 
+        {/* Track Selection */}
         <div className="spotify-moods">
           <button
+            type="button"
             className={selectedTrack === 0 ? "active" : ""}
             onClick={() => playTrack(0)}
             aria-label="Show Me How"
@@ -209,6 +225,7 @@ export default function SpotifyPlayer() {
           </button>
 
           <button
+            type="button"
             className={selectedTrack === 1 ? "active" : ""}
             onClick={() => playTrack(1)}
             aria-label="Numb"
@@ -217,6 +234,7 @@ export default function SpotifyPlayer() {
           </button>
 
           <button
+            type="button"
             className={selectedTrack === 2 ? "active" : ""}
             onClick={() => playTrack(2)}
             aria-label="Lauren"
@@ -232,6 +250,7 @@ export default function SpotifyPlayer() {
           <span>Top on Spotify</span>
         </div>
 
+        {/* Current Track */}
         <div className="spotify-track">
           <div className="spotify-track-info">
             <strong>{currentTrack.title}</strong>
@@ -239,11 +258,13 @@ export default function SpotifyPlayer() {
           </div>
         </div>
 
+        {/* Spotify Embed */}
         <div
           className="spotify-embed-player"
           ref={playerElement}
         />
 
+        {/* Listen on Spotify */}
         <a
           className="spotify-listen"
           href={currentTrack.url}

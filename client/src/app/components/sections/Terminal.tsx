@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -34,8 +33,29 @@ export default function Terminal() {
   const terminalRef = useRef(null);
 
   // تحديث وقت الدخول بعد تحميل الصفحة
+
   useEffect(() => {
-    setLoginTime(getLoginTime());
+    const terminal = terminalRef.current;
+
+    if (!terminal) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoginTime(getLoginTime());
+          setHasEntered(true);
+
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.3,
+      },
+    );
+
+    observer.observe(terminal);
+
+    return () => observer.disconnect();
   }, []);
 
   // مراقبة ظهور التيرمنال على الشاشة
@@ -53,7 +73,7 @@ export default function Terminal() {
       },
       {
         threshold: 0.3,
-      }
+      },
     );
 
     observer.observe(terminal);
@@ -99,25 +119,17 @@ export default function Terminal() {
         </div>
 
         <div className="terminal-body">
-          <p className="terminal-login">
-            Last login: {loginTime} on website
-          </p>
+          <p className="terminal-login">Last login: {loginTime} on website</p>
 
           <p className="terminal-command">
-            <span className="terminal-user">
-              user@machine:~$
-            </span>{" "}
+            <span className="terminal-user">user@machine:~$</span>{" "}
             <span className="terminal-fortune">
               fortune MohammadTelfah.fortune
             </span>
           </p>
 
           <p className="terminal-output">
-            <span className="terminal-bot">
-              bot@gpt:~$
-            </span>{" "}
-            {displayedText}
-
+            <span className="terminal-bot">bot@gpt:~$</span> {displayedText}
             {hasEntered && displayedText.length < quote.length && (
               <span className="terminal-cursor" />
             )}
