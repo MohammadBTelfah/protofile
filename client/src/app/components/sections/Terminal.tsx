@@ -1,7 +1,11 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Moon } from "lucide-react";
+
+const quote =
+  "Perfection may not be attainable, but if we chase perfection, we can catch excellence.";
 
 const getLoginTime = () => {
   const now = new Date();
@@ -24,26 +28,49 @@ const getLoginTime = () => {
 
 export default function Terminal() {
   const [displayedText, setDisplayedText] = useState("");
+  const [loginTime, setLoginTime] = useState("Loading...");
+  const [hasEntered, setHasEntered] = useState(false);
 
-  const [loginTime] = useState(() => {
-    // أثناء الـ SSR نرجع قيمة ثابتة لتجنب Hydration Error
-    if (typeof window === "undefined") {
-      return "Loading...";
-    }
+  const terminalRef = useRef(null);
 
-    // يتم حساب الوقت الحقيقي في المتصفح
-    return getLoginTime();
-  });
-
-  const quote =
-    "Perfection may not be attainable, but if we chase perfection, we can catch excellence.";
-
+  // تحديث وقت الدخول بعد تحميل الصفحة
   useEffect(() => {
+    setLoginTime(getLoginTime());
+  }, []);
+
+  // مراقبة ظهور التيرمنال على الشاشة
+  useEffect(() => {
+    const terminal = terminalRef.current;
+
+    if (!terminal) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasEntered(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.3,
+      }
+    );
+
+    observer.observe(terminal);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // بدء الكتابة عند الوصول للتيرمنال
+  useEffect(() => {
+    if (!hasEntered) return;
+
     let index = 0;
 
     const typing = setInterval(() => {
-      setDisplayedText(quote.slice(0, index + 1));
       index++;
+
+      setDisplayedText(quote.slice(0, index));
 
       if (index >= quote.length) {
         clearInterval(typing);
@@ -51,14 +78,14 @@ export default function Terminal() {
     }, 35);
 
     return () => clearInterval(typing);
-  }, [quote]);
+  }, [hasEntered]);
 
   return (
     <section className="terminal-section">
       <div className="terminal-grid" />
       <div className="terminal-glow" />
 
-      <div className="terminal-window">
+      <div className="terminal-window" ref={terminalRef}>
         <div className="terminal-header">
           <div className="terminal-controls">
             <span className="terminal-dot red" />
@@ -77,16 +104,23 @@ export default function Terminal() {
           </p>
 
           <p className="terminal-command">
-            <span className="terminal-user">user@machine:~$</span>{" "}
+            <span className="terminal-user">
+              user@machine:~$
+            </span>{" "}
             <span className="terminal-fortune">
               fortune MohammadTelfah.fortune
             </span>
           </p>
 
           <p className="terminal-output">
-            <span className="terminal-bot">bot@gpt:~$</span>{" "}
+            <span className="terminal-bot">
+              bot@gpt:~$
+            </span>{" "}
             {displayedText}
-            <span className="terminal-cursor" />
+
+            {hasEntered && displayedText.length < quote.length && (
+              <span className="terminal-cursor" />
+            )}
           </p>
         </div>
       </div>
