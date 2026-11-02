@@ -881,119 +881,99 @@ a {
 
 
 /* =========================
-   ABOUT SKILL TAGS
-   Clean, realistic skill badges
+   FLOATING TAGS
 ========================= */
 
 .about-tags {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
+  position: absolute;
+  top: 0;
+  left: 24%;
 
-  width: 100%;
-  height: auto;
-  margin-top: 28px;
+  width: 440px;
+  height: 160px;
 
   pointer-events: none;
   z-index: 2;
 }
 
 .about-tag {
-  position: relative;
+  position: absolute;
 
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 
-  padding: 10px 15px;
+  padding: 8px 18px;
 
-  color: #303038;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #e7e7eb;
-  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-radius: 14px;
 
-  font-size: 15px;
+  font-size: clamp(18px, 1.7vw, 28px);
   font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: 1;
+
   white-space: nowrap;
 
-  box-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.025),
-    0 8px 22px rgba(0, 0, 0, 0.045);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
 
-  animation: about-tag-float 5s ease-in-out infinite;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+  animation: tag-float 4s ease-in-out infinite;
 }
 
-.about-tag:nth-child(2) {
-  animation-delay: 0.35s;
+
+/* Performance */
+
+.tag-performance {
+  top: -42px;
+  left: 120px;
+
+  color: #a500b5;
+  background: #f5d9ff;
+
+  transform: rotate(8deg);
 }
 
-.about-tag:nth-child(3) {
-  animation-delay: 0.7s;
+
+/* Mobile Development */
+
+.tag-mobile {
+  top: 8px;
+  left: -15px;
+
+  color: #b66b00;
+  background: #ffe7a8;
+
+  transform: rotate(-5deg);
+  animation-delay: 0.4s;
 }
 
-.about-tag:nth-child(4) {
-  animation-delay: 1.05s;
+
+/* UI / UX */
+
+.tag-ui {
+  top: 42px;
+  left: 190px;
+
+  color: #d60062;
+  background: #ffd3e6;
+
+  transform: rotate(7deg);
+  animation-delay: 0.8s;
 }
 
-.about-tag-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 
-  width: 27px;
-  height: 27px;
-  flex: 0 0 27px;
+/* Clean Code */
 
-  color: #55555f;
-  background: #f3f3f5;
-  border-radius: 50%;
+.tag-code {
+  top: 65px;
+  left: 25px;
+
+  color: #438300;
+  background: #dcffb5;
+
+  transform: rotate(-4deg);
+  animation-delay: 1.2s;
 }
 
-.about-tag-icon svg {
-  display: block;
-  width: 15px;
-  height: 15px;
-  stroke-width: 2;
-}
-
-.tag-performance .about-tag-icon {
-  color: #287b55;
-  background: #eaf5ef;
-}
-
-.tag-mobile .about-tag-icon {
-  color: #426b9b;
-  background: #edf3fa;
-}
-
-.tag-ui .about-tag-icon {
-  color: #7857a6;
-  background: #f2eef8;
-}
-
-.tag-code .about-tag-icon {
-  color: #477b54;
-  background: #edf5ee;
-}
-
-@keyframes about-tag-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-3px);
-  }
-}
 
 /* =========================
    ABOUT ANIMATIONS
@@ -1031,6 +1011,9 @@ a {
     padding: 100px 6%;
   }
 
+  .about-tags {
+    left: 18%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1154,27 +1137,33 @@ a {
 
   .about-tags {
     position: relative;
+    top: auto;
+    left: auto;
+
     width: 100%;
-    height: auto;
-    margin-top: 24px;
-    gap: 9px;
+    height: 180px;
+
+    margin-top: 35px;
   }
 
-  .about-tag {
-    padding: 8px 12px;
-    font-size: 13px;
-    animation-duration: 6s;
+  .tag-performance {
+    top: 0;
+    left: 20%;
   }
 
-  .about-tag-icon {
-    width: 24px;
-    height: 24px;
-    flex-basis: 24px;
+  .tag-mobile {
+    top: 50px;
+    left: 0;
   }
 
-  .about-tag-icon svg {
-    width: 14px;
-    height: 14px;
+  .tag-ui {
+    top: 95px;
+    left: 28%;
+  }
+
+  .tag-code {
+    top: 125px;
+    left: 0;
   }
 }
 
@@ -1236,11 +1225,6 @@ a {
 ========================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .about-tag {
-    animation: none !important;
-    transition: none !important;
-  }
-
   *,
   *::before,
   *::after {
