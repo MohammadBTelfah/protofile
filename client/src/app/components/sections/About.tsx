@@ -1,3 +1,13 @@
+
+"use client";
+
+import {
+  Gauge,
+  Smartphone,
+  PanelsTopLeft,
+  Code2,
+} from "lucide-react";
+
 export default function About() {
   return (
     <section className="about-section" id="about">
@@ -19,21 +29,33 @@ export default function About() {
             user experiences.
           </p>
 
-          <div className="about-tags" aria-hidden="true">
+          <div className="about-tags" aria-label="Development skills">
             <span className="about-tag tag-performance">
-              🚀 Performance
+              <span className="about-tag-icon">
+                <Gauge size={16} />
+              </span>
+              Performance
             </span>
 
             <span className="about-tag tag-mobile">
-              📱 Mobile Development
+              <span className="about-tag-icon">
+                <Smartphone size={16} />
+              </span>
+              Mobile Development
             </span>
 
             <span className="about-tag tag-ui">
-              ✦ UI / UX
+              <span className="about-tag-icon">
+                <PanelsTopLeft size={16} />
+              </span>
+              UI / UX
             </span>
 
             <span className="about-tag tag-code">
-              💻 Clean Code
+              <span className="about-tag-icon">
+                <Code2 size={16} />
+              </span>
+              Clean Code
             </span>
           </div>
         </div>
